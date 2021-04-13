@@ -15,7 +15,7 @@ public interface GraphADT<T> {
      * @return true if the data can be inserted as a new vertex, false if it is already in the graph
      * @throws NullPointerException if data is null
      */
-    public boolean insertVertex(T data);
+    public boolean insertVertex(String name, boolean r, boolean b, boolean g);
 
     /**
      * Remove a vertex from the graph.
@@ -25,7 +25,7 @@ public interface GraphADT<T> {
      * @return true if a vertex with *data* has been removed, false if it was not in the graph
      * @throws NullPointerException if data is null
      */
-    public boolean removeVertex(T data);
+    public boolean removeVertex(String name);
 
     /**
      * Insert a new directed edge with a positive edges weight into the graph.
@@ -37,7 +37,7 @@ public interface GraphADT<T> {
      * @throws IllegalArgumentException if either sourceVertex or targetVertex or both are not in the graph, or weight is < 0
      * @throws NullPointerException if either sourceVertex or targetVertex or both are null
      */
-    public boolean insertEdge(T source, T target, int weight);
+    public boolean insertEdge(String source, String target, int weight);
 
     /**
      * Remove an edge from the graph.
@@ -48,7 +48,7 @@ public interface GraphADT<T> {
      * @throws IllegalArgumentException if either sourceVertex or targetVertex or both are not in the graph
      * @throws NullPointerException if either sourceVertex or targetVertex or both are null
      */
-    public boolean removeEdge(T source, T target);
+    public boolean removeEdge(String source, String target);
 
     /**
      * Check if the graph contains a vertex with data item *data*.
@@ -57,7 +57,7 @@ public interface GraphADT<T> {
      * @return true if data item is stored in a vertex of the graph, false otherwise
      * @throws NullPointerException if *data* is null
      */
-    public boolean containsVertex(T data);
+    public boolean containsVertex(String name);
 
     /**
      * Check if edge is in the graph.
@@ -67,7 +67,7 @@ public interface GraphADT<T> {
      * @return true if the edge is in the graph, false if it is not in the graph
      * @throws NullPointerException if either sourceVertex or targetVertex or both are null
      */
-    public boolean containsEdge(T source, T target);
+    public boolean containsEdge(String source, String target);
 
     /**
      * Return the weight of an edge.
@@ -79,7 +79,7 @@ public interface GraphADT<T> {
      * @throws NullPointerException if either sourceVertex or targetVertex or both are null
      * @throws NoSuchElementException if edge is not in the graph
      */
-    public int getWeight(T source, T target);
+    public int getWeight(String source, String target);
 
     /**
      * Returns the shortest path between startingVertex and destinationVertex.
@@ -89,7 +89,7 @@ public interface GraphADT<T> {
      * @param end the data item in the destination vertex for the path
      * @return list of data item in vertices in order on the shortest path between vertex with data item startingVertex and vertex with data item destinationVertex, including both startingVertex and destinationVertex
      */
-    public List<T> shortestPath(T start, T end);
+    public List<String> shortestPath(String start, String end);
 
     /**
      * Returns the cost of the path (sum over edge weights) between startingVertex and destinationVertex.
@@ -99,7 +99,7 @@ public interface GraphADT<T> {
      * @param end the data item in the destination vertex for the path
      * @return the cost of the shortest path between vertex with data item startingVertex and vertex with data item destinationVertex, including both startingVertex and destinationVertex
      */
-    public int getPathCost(T start, T end);
+    public int getPathCost(String start, String end);
 
     /**
      * Check if the graph is empty (does not contain any vertices or edges).
