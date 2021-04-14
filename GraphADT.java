@@ -5,7 +5,7 @@ import java.util.NoSuchElementException;
  * This ADT represents a directed graph data structure with positive edge weights.
  *
  */
-public interface GraphADT {
+public interface GraphADT<T> {
 
     /**
      * Insert a new vertex into the graph.
