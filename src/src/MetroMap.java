@@ -1,28 +1,44 @@
+// --== CS400 File Header Information ==--
+// Name: Jarred Blinken Jake Schroeder
+// Email: blinken@wisc.edu
+// Team: KG Blue
+// Role: Backend Developer // Data Wrangler
+// TA: Keren Chen
+// Lecturer: Gary Dahl
+// Notes to Grader:
+
 import java.util.Hashtable;
 import java.util.List;
 import java.util.LinkedList;
 import java.util.PriorityQueue;
 import java.util.NoSuchElementException;
 
-public class CS400Graph<T> implements GraphADT<T> {
+public class MetroMap<T> implements GraphADT {
 
     /**
-     * Vertex objects group a data field with an adjacency list of weighted
+     * Station objects group a data field with an adjacency list of weighted
      * directed edges that lead away from them.
      */
     protected class Vertex {
-        public T data; // vertex label or application specific data
+        public String name; // name of station
+        public boolean red; // true if red line runs through station
+        public boolean blue; // true if blue line runs through station
+        public boolean green; // true if green line runs through station
         public LinkedList<Edge> edgesLeaving;
 
-        public Vertex(T data) {
-            this.data = data;
+        public Vertex(String name, boolean r, boolean b, boolean g) {
+            this.name = name;
+            this.red = r;
+            this.blue = b;
+            this.green = g;
             this.edgesLeaving = new LinkedList<>();
         }
     }
 
     /**
-     * Edge objects are stored within their source vertex, and group together
-     * their target destination vertex, along with an integer weight.
+     * Edge objects are stored within their source station, and group together
+     * their target destination vertex, along with an integer weight, denoting the 
+     * distance between the two stations.
      */
     protected class Edge {
         public Vertex target;
@@ -34,22 +50,22 @@ public class CS400Graph<T> implements GraphADT<T> {
         }
     }
 
-    protected Hashtable<T, Vertex> vertices; // holds graph verticies, key=data
-    public CS400Graph() { vertices = new Hashtable<>(); }
+    protected Hashtable<String, Vertex> vertices; // holds graph verticies, key=data
+    public MetroMap() { vertices = new Hashtable<>(); }
 
     /**
      * Insert a new vertex into the graph.
      *
-     * @param data the data item stored in the new vertex
+     * @param name the data item stored in the new vertex
      * @return true if the data can be inserted as a new vertex, false if it is
      *     already in the graph
      * @throws NullPointerException if data is null
      */
-    public boolean insertVertex(T data) {
-        if(data == null)
-            throw new NullPointerException("Cannot add null vertex");
-        if(vertices.containsKey(data)) return false; // duplicate values are not allowed
-        vertices.put(data, new Vertex(data));
+    public boolean insertVertex(String name, boolean r, boolean b, boolean g) {
+        if(name == null)
+            throw new NullPointerException("Cannot add null station");
+        if(vertices.containsKey(name)) return false; // duplicate values are not allowed
+        vertices.put(name, new Vertex(name, r, b, g));
         return true;
     }
 
@@ -58,13 +74,13 @@ public class CS400Graph<T> implements GraphADT<T> {
      * Also removes all edges adjacent to the vertex from the graph (all edges
      * that have the vertex as a source or a destination vertex).
      *
-     * @param data the data item stored in the vertex to remove
-     * @return true if a vertex with *data* has been removed, false if it was not in the graph
+     * @param name the data item stored in the vertex to remove
+     * @return true if a vertex with *name* has been removed, false if it was not in the graph
      * @throws NullPointerException if data is null
      */
-    public boolean removeVertex(T data) {
-        if(data == null) throw new NullPointerException("Cannot remove null vertex");
-        Vertex removeVertex = vertices.get(data);
+    public boolean removeVertex(String name) {
+        if(name == null) throw new NullPointerException("Cannot remove null vertex");
+        Vertex removeVertex = vertices.get(name);
         if(removeVertex == null) return false; // vertex not found within graph
         // search all vertices for edges targeting removeVertex
         for(Vertex v : vertices.values()) {
@@ -76,14 +92,14 @@ public class CS400Graph<T> implements GraphADT<T> {
             if(removeEdge != null) v.edgesLeaving.remove(removeEdge);
         }
         // finally remove the vertex and all edges contained within it
-        return vertices.remove(data) != null;
+        return vertices.remove(name) != null;
     }
 
     /**
      * Insert a new directed edge with a positive edge weight into the graph.
      *
-     * @param source the data item contained in the source vertex for the edge
-     * @param target the data item contained in the target vertex for the edge
+     * @param vertex the data item contained in the source vertex for the edge
+     * @param vertex2 the data item contained in the target vertex for the edge
      * @param weight the weight for the edge (has to be a positive integer)
      * @return true if the edge could be inserted or its weight updated, false
      *     if the edge with the same weight was already in the graph
@@ -91,11 +107,11 @@ public class CS400Graph<T> implements GraphADT<T> {
      *     or if its weight is < 0
      * @throws NullPointerException if either source or target or both are null
      */
-    public boolean insertEdge(T source, T target, int weight) {
-        if(source == null || target == null)
+    public boolean insertEdge(String vertex, String vertex2, int weight) {
+        if(vertex == null || vertex2 == null)
             throw new NullPointerException("Cannot add edge with null source or target");
-        Vertex sourceVertex = this.vertices.get(source);
-        Vertex targetVertex = this.vertices.get(target);
+        Vertex sourceVertex = this.vertices.get(vertex);
+        Vertex targetVertex = this.vertices.get(vertex2);
         if(sourceVertex == null || targetVertex == null)
             throw new IllegalArgumentException("Cannot add edge with vertices that do not exist");
         if(weight < 0)
@@ -121,7 +137,7 @@ public class CS400Graph<T> implements GraphADT<T> {
      * @throws IllegalArgumentException if either source or target or both are not in the graph
      * @throws NullPointerException if either source or target or both are null
      */
-    public boolean removeEdge(T source, T target) {
+    public boolean removeEdge(String source, String target) {
         if(source == null || target == null) throw new NullPointerException("Cannot remove edge with null source or target");
         Vertex sourceVertex = this.vertices.get(source);
         Vertex targetVertex = this.vertices.get(target);
@@ -139,15 +155,15 @@ public class CS400Graph<T> implements GraphADT<T> {
     }
 
     /**
-     * Check if the graph contains a vertex with data item *data*.
+     * Check if the graph contains a vertex with data item *name*.
      *
-     * @param data the data item to check for
+     * @param name the data item to check for
      * @return true if data item is stored in a vertex of the graph, false otherwise
-     * @throws NullPointerException if *data* is null
+     * @throws NullPointerException if *name* is null
      */
-    public boolean containsVertex(T data) {
-        if(data == null) throw new NullPointerException("Cannot contain null data vertex");
-        return vertices.containsKey(data);
+    public boolean containsVertex(String name) {
+        if(name == null) throw new NullPointerException("Cannot contain null data vertex");
+        return vertices.containsKey(name);
     }
 
     /**
@@ -158,7 +174,7 @@ public class CS400Graph<T> implements GraphADT<T> {
      * @return true if the edge is in the graph, false if it is not in the graph
      * @throws NullPointerException if either source or target or both are null
      */
-    public boolean containsEdge(T source, T target) {
+    public boolean containsEdge(String source, String target) {
         if(source == null || target == null) throw new NullPointerException("Cannot contain edge adjacent to null data");
         Vertex sourceVertex = vertices.get(source);
         Vertex targetVertex = vertices.get(target);
@@ -179,7 +195,7 @@ public class CS400Graph<T> implements GraphADT<T> {
      * @throws NullPointerException if either sourceVertex or targetVertex or both are null
      * @throws NoSuchElementException if edge is not in the graph
      */
-    public int getWeight(T source, T target) {
+    public int getWeight(String source, String target) {
         if(source == null || target == null) throw new NullPointerException("Cannot contain weighted edge adjacent to null data");
         Vertex sourceVertex = vertices.get(source);
         Vertex targetVertex = vertices.get(target);
@@ -212,6 +228,16 @@ public class CS400Graph<T> implements GraphADT<T> {
     }
 
     /**
+     * Return the vertex with the given key.
+     *
+     * @return the vertex with the given key.
+     */
+    public Vertex getVertex(String name) {
+        return vertices.get(name);
+    }
+
+
+    /**
      * Check if the graph is empty (does not contain any vertices or edges).
      *
      * @return true if the graph does not contain any vertices or edges, false otherwise
@@ -231,7 +257,7 @@ public class CS400Graph<T> implements GraphADT<T> {
     protected class Path implements Comparable<Path>{
         public Vertex start; // first vertex within path
         public int distance; // sumed weight of all edges in path
-        public List<T> dataSequence; // ordered sequence of data from vertices in path
+        public List<String> dataSequence; // ordered sequence of data from vertices in path
         public Vertex end; // last vertex within path
 
         /**
@@ -243,7 +269,7 @@ public class CS400Graph<T> implements GraphADT<T> {
             this.start = start;
             this.distance = 0;
             this.dataSequence = new LinkedList<>();
-            this.dataSequence.add(start.data);
+            this.dataSequence.add(start.name);
             this.end = start;
         }
 
@@ -260,7 +286,7 @@ public class CS400Graph<T> implements GraphADT<T> {
           for(int i = 0; i < p2.dataSequence.size(); i++)  {
               this.dataSequence.add(p2.dataSequence.get(i));
           }
-          this.dataSequence.add(extendBy.target.data);
+          this.dataSequence.add(extendBy.target.name);
           this.start = p2.start;
           this.end = extendBy.target;
           this.distance = p2.distance + extendBy.weight;
@@ -279,7 +305,7 @@ public class CS400Graph<T> implements GraphADT<T> {
             if(cmp != 0) return cmp; // use path distance as the natural ordering
             // when path distances are equal, break ties by comparing the string
             // representation of data in the end vertex of each path
-            return this.end.data.toString().compareTo(other.end.data.toString());
+            return this.end.name.toString().compareTo(other.end.name.toString());
         }
     }
 
@@ -294,7 +320,7 @@ public class CS400Graph<T> implements GraphADT<T> {
      * @throws NoSuchElementException when no path from start to end can be found,
      *     including when no vertex containing start or end can be found
      */
-    protected Path dijkstrasShortestPath(T start, T end) {
+    protected Path dijkstrasShortestPath(String start, String end) {
         PriorityQueue<Path> frontier = new PriorityQueue<Path>();
         LinkedList<Vertex> visited = new LinkedList<Vertex>();
         LinkedList<Path> fin = new LinkedList<Path>();
@@ -307,7 +333,7 @@ public class CS400Graph<T> implements GraphADT<T> {
                 if(visited.contains(curr.end.edgesLeaving.get(i).target)){
                     continue;
                 }
-                if(curr.end.edgesLeaving.get(i).target.data.equals(end))  {
+                if(curr.end.edgesLeaving.get(i).target.name.equals(end))  {
                     fin.add(new Path(curr, curr.end.edgesLeaving.get(i)));
                     continue;
                 }
@@ -331,7 +357,7 @@ public class CS400Graph<T> implements GraphADT<T> {
             else curr = t1;
         }
 
-        if (!curr.start.data.equals(start) || !curr.end.data.equals(end)) {
+        if (!curr.start.name.equals(start) || !curr.end.name.equals(end)) {
             throw new NoSuchElementException();
         }
         return curr;
@@ -357,7 +383,7 @@ public class CS400Graph<T> implements GraphADT<T> {
          * @throws NoSuchElementException when no path from start to end can be found
          *     including when no vertex containing start or end can be found
          */
-    public List<T> shortestPath(T start, T end) {
+    public List<String> shortestPath(String start, String end) {
         return dijkstrasShortestPath(start,end).dataSequence;
     }
 
@@ -372,7 +398,7 @@ public class CS400Graph<T> implements GraphADT<T> {
      * @throws NoSuchElementException when no path from start to end can be found
      *     including when no vertex containing start or end can be found
      */
-    public int getPathCost(T start, T end) {
+    public int getPathCost(String start, String end) {
         return dijkstrasShortestPath(start, end).distance;
     }
 

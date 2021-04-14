@@ -1,44 +1,28 @@
-// --== CS400 File Header Information ==--
-// Name: Jake Schroeder
-// Email: schroeder22@wisc.edu
-// Team: KG Blue
-// Role: Data Wrangler // Backend Developer
-// TA: Keren Chen
-// Lecturer: Florian Heimerl
-// Notes to Grader:
-
 import java.util.Hashtable;
 import java.util.List;
 import java.util.LinkedList;
 import java.util.PriorityQueue;
 import java.util.NoSuchElementException;
 
-public class MetroMap<T> implements GraphADT<T> {
+public class CS400Graph implements GraphADT {
 
     /**
-     * Station objects group a data field with an adjacency list of weighted
+     * Vertex objects group a data field with an adjacency list of weighted
      * directed edges that lead away from them.
      */
     protected class Vertex {
-        public String name; // name of station
-        public boolean red; // true if red line runs through station
-        public boolean blue; // true if blue line runs through station
-        public boolean green; // true if green line runs through station
+        public String data; // vertex label or application specific data
         public LinkedList<Edge> edgesLeaving;
 
-        public Vertex(String name, boolean r, boolean b, boolean g) {
-            this.name = name;
-            this.red = r;
-            this.blue = b;
-            this.green = g;
+        public Vertex(String data) {
+            this.data = data;
             this.edgesLeaving = new LinkedList<>();
         }
     }
 
     /**
-     * Edge objects are stored within their source station, and group together
-     * their target destination vertex, along with an integer weight, denoting the 
-     * distance between the two stations.
+     * Edge objects are stored within their source vertex, and group together
+     * their target destination vertex, along with an integer weight.
      */
     protected class Edge {
         public Vertex target;
@@ -51,7 +35,7 @@ public class MetroMap<T> implements GraphADT<T> {
     }
 
     protected Hashtable<String, Vertex> vertices; // holds graph verticies, key=data
-    public MetroMap() { vertices = new Hashtable<>(); }
+    public CS400Graph() { vertices = new Hashtable<>(); }
 
     /**
      * Insert a new vertex into the graph.
@@ -61,11 +45,11 @@ public class MetroMap<T> implements GraphADT<T> {
      *     already in the graph
      * @throws NullPointerException if data is null
      */
-    public boolean insertVertex(String name, boolean r, boolean b, boolean g) {
-        if(name == null)
-            throw new NullPointerException("Cannot add null station");
-        if(vertices.containsKey(name)) return false; // duplicate values are not allowed
-        vertices.put(name, new Vertex(name, r, b, g));
+    public boolean insertVertex(String data, boolean r, boolean b, boolean g) {
+        if(data == null)
+            throw new NullPointerException("Cannot add null vertex");
+        if(vertices.containsKey(data)) return false; // duplicate values are not allowed
+        vertices.put(data, new Vertex(data));
         return true;
     }
 
@@ -74,13 +58,13 @@ public class MetroMap<T> implements GraphADT<T> {
      * Also removes all edges adjacent to the vertex from the graph (all edges
      * that have the vertex as a source or a destination vertex).
      *
-     * @param name the data item stored in the vertex to remove
-     * @return true if a vertex with *name* has been removed, false if it was not in the graph
+     * @param data the data item stored in the vertex to remove
+     * @return true if a vertex with *data* has been removed, false if it was not in the graph
      * @throws NullPointerException if data is null
      */
-    public boolean removeVertex(String name) {
-        if(name == null) throw new NullPointerException("Cannot remove null vertex");
-        Vertex removeVertex = vertices.get(name);
+    public boolean removeVertex(String data) {
+        if(data == null) throw new NullPointerException("Cannot remove null vertex");
+        Vertex removeVertex = vertices.get(data);
         if(removeVertex == null) return false; // vertex not found within graph
         // search all vertices for edges targeting removeVertex
         for(Vertex v : vertices.values()) {
@@ -92,14 +76,14 @@ public class MetroMap<T> implements GraphADT<T> {
             if(removeEdge != null) v.edgesLeaving.remove(removeEdge);
         }
         // finally remove the vertex and all edges contained within it
-        return vertices.remove(name) != null;
+        return vertices.remove(data) != null;
     }
 
     /**
      * Insert a new directed edge with a positive edge weight into the graph.
      *
-     * @param vertex the data item contained in the source vertex for the edge
-     * @param vertex2 the data item contained in the target vertex for the edge
+     * @param source the data item contained in the source vertex for the edge
+     * @param target the data item contained in the target vertex for the edge
      * @param weight the weight for the edge (has to be a positive integer)
      * @return true if the edge could be inserted or its weight updated, false
      *     if the edge with the same weight was already in the graph
@@ -107,11 +91,11 @@ public class MetroMap<T> implements GraphADT<T> {
      *     or if its weight is < 0
      * @throws NullPointerException if either source or target or both are null
      */
-    public boolean insertEdge(String vertex, String vertex2, int weight) {
-        if(vertex == null || vertex2 == null)
+    public boolean insertEdge(String source, String target, int weight) {
+        if(source == null || target == null)
             throw new NullPointerException("Cannot add edge with null source or target");
-        Vertex sourceVertex = this.vertices.get(vertex);
-        Vertex targetVertex = this.vertices.get(vertex2);
+        Vertex sourceVertex = this.vertices.get(source);
+        Vertex targetVertex = this.vertices.get(target);
         if(sourceVertex == null || targetVertex == null)
             throw new IllegalArgumentException("Cannot add edge with vertices that do not exist");
         if(weight < 0)
@@ -155,15 +139,15 @@ public class MetroMap<T> implements GraphADT<T> {
     }
 
     /**
-     * Check if the graph contains a vertex with data item *name*.
+     * Check if the graph contains a vertex with data item *data*.
      *
-     * @param name the data item to check for
+     * @param data the data item to check for
      * @return true if data item is stored in a vertex of the graph, false otherwise
-     * @throws NullPointerException if *name* is null
+     * @throws NullPointerException if *data* is null
      */
-    public boolean containsVertex(String name) {
-        if(name == null) throw new NullPointerException("Cannot contain null data vertex");
-        return vertices.containsKey(name);
+    public boolean containsVertex(String data) {
+        if(data == null) throw new NullPointerException("Cannot contain null data vertex");
+        return vertices.containsKey(data);
     }
 
     /**
@@ -228,16 +212,6 @@ public class MetroMap<T> implements GraphADT<T> {
     }
 
     /**
-     * Return the vertex with the given key.
-     *
-     * @return the vertex with the given key.
-     */
-    public Vertex getVertex(String name) {
-        return vertices.get(name);
-    }
-
-
-    /**
      * Check if the graph is empty (does not contain any vertices or edges).
      *
      * @return true if the graph does not contain any vertices or edges, false otherwise
@@ -257,7 +231,7 @@ public class MetroMap<T> implements GraphADT<T> {
     protected class Path implements Comparable<Path>{
         public Vertex start; // first vertex within path
         public int distance; // sumed weight of all edges in path
-        public List<String> dataSequence; // ordered sequence of data from vertices in path
+        public List<T> dataSequence; // ordered sequence of data from vertices in path
         public Vertex end; // last vertex within path
 
         /**
@@ -269,7 +243,7 @@ public class MetroMap<T> implements GraphADT<T> {
             this.start = start;
             this.distance = 0;
             this.dataSequence = new LinkedList<>();
-            this.dataSequence.add(start.name);
+            this.dataSequence.add(start.data);
             this.end = start;
         }
 
@@ -286,7 +260,7 @@ public class MetroMap<T> implements GraphADT<T> {
           for(int i = 0; i < p2.dataSequence.size(); i++)  {
               this.dataSequence.add(p2.dataSequence.get(i));
           }
-          this.dataSequence.add(extendBy.target.name);
+          this.dataSequence.add(extendBy.target.data);
           this.start = p2.start;
           this.end = extendBy.target;
           this.distance = p2.distance + extendBy.weight;
@@ -305,7 +279,7 @@ public class MetroMap<T> implements GraphADT<T> {
             if(cmp != 0) return cmp; // use path distance as the natural ordering
             // when path distances are equal, break ties by comparing the string
             // representation of data in the end vertex of each path
-            return this.end.name.toString().compareTo(other.end.name.toString());
+            return this.end.data.toString().compareTo(other.end.data.toString());
         }
     }
 
@@ -320,7 +294,7 @@ public class MetroMap<T> implements GraphADT<T> {
      * @throws NoSuchElementException when no path from start to end can be found,
      *     including when no vertex containing start or end can be found
      */
-    protected Path dijkstrasShortestPath(String start, String end) {
+    protected Path dijkstrasShortestPath(T start, T end) {
         PriorityQueue<Path> frontier = new PriorityQueue<Path>();
         LinkedList<Vertex> visited = new LinkedList<Vertex>();
         LinkedList<Path> fin = new LinkedList<Path>();
@@ -333,7 +307,7 @@ public class MetroMap<T> implements GraphADT<T> {
                 if(visited.contains(curr.end.edgesLeaving.get(i).target)){
                     continue;
                 }
-                if(curr.end.edgesLeaving.get(i).target.name.equals(end))  {
+                if(curr.end.edgesLeaving.get(i).target.data.equals(end))  {
                     fin.add(new Path(curr, curr.end.edgesLeaving.get(i)));
                     continue;
                 }
@@ -357,7 +331,7 @@ public class MetroMap<T> implements GraphADT<T> {
             else curr = t1;
         }
 
-        if (!curr.start.name.equals(start) || !curr.end.name.equals(end)) {
+        if (!curr.start.data.equals(start) || !curr.end.data.equals(end)) {
             throw new NoSuchElementException();
         }
         return curr;
@@ -383,7 +357,7 @@ public class MetroMap<T> implements GraphADT<T> {
          * @throws NoSuchElementException when no path from start to end can be found
          *     including when no vertex containing start or end can be found
          */
-    public List<String> shortestPath(String start, String end) {
+    public List<T> shortestPath(T start, T end) {
         return dijkstrasShortestPath(start,end).dataSequence;
     }
 
@@ -398,7 +372,7 @@ public class MetroMap<T> implements GraphADT<T> {
      * @throws NoSuchElementException when no path from start to end can be found
      *     including when no vertex containing start or end can be found
      */
-    public int getPathCost(String start, String end) {
+    public int getPathCost(T start, T end) {
         return dijkstrasShortestPath(start, end).distance;
     }
 
