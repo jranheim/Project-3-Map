@@ -394,7 +394,11 @@ public class MetroMap<T> implements GraphADT<T> {
          *     including when no vertex containing start or end can be found
          */
     public List<String> shortestPath(String start, String end, String color) {
+        try{
         return dijkstrasShortestPath(start,end,color).dataSequence;
+        } catch(Exception e)  {
+            return null;
+        }
     }
 
     /**
@@ -408,7 +412,7 @@ public class MetroMap<T> implements GraphADT<T> {
      * @throws NoSuchElementException when no path from start to end can be found
      *     including when no vertex containing start or end can be found
      */
-    public int getPathCost(String start, String end,String color) {
+    public int getPathCost(String start, String end, String color) {
         return dijkstrasShortestPath(start, end, color).distance;
     }
 
