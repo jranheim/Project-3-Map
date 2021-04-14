@@ -1,10 +1,10 @@
 // --== CS400 File Header Information ==--
-// Name: Jake Schroeder
-// Email: schroeder22@wisc.edu
+// Name: Jarred Blinken
+// Email: blinken@wisc.edu
 // Team: KG Blue
-// Role: Data Wrangler // Backend Developer
+// Role: Backend Developer
 // TA: Keren Chen
-// Lecturer: Florian Heimerl
+// Lecturer: Gary Dahl
 // Notes to Grader:
 
 import java.util.Hashtable;
