@@ -1,1 +1,12 @@
-"Station 1", "Station 2"
+A, C, 8
+C, E, 5
+E, G, 4
+G, H, 5
+H, F, 15
+F, A, 9
+E, H, 8
+H, F, 15
+A, B, 4
+B, E, 5
+E, H, 8
+

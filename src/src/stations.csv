@@ -1,11 +1,8 @@
-"Grand Central"
-"Penn Station"
-"Chambers Street"
-"23rd Street"
-"9th Street"
-"LIC"
-"South Ferry"
-"72nd Street"
-"57th Street"
-"96th Street"
-
+A, true, true, true
+B, false, false, true
+C, true, true, false
+D, false, false, true
+E, true, true, true
+F, true, true, true
+G, true, false, true
+H, true, true, false
