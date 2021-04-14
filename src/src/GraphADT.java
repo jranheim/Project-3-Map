@@ -4,14 +4,13 @@ import java.util.NoSuchElementException;
 /**
  * This ADT represents a directed graph data structure with positive edge weights.
  *
- * @param <T> the data type stored at each graph vertex
  */
-public interface GraphADT<T> {
+public interface GraphADT {
 
     /**
      * Insert a new vertex into the graph.
      *
-     * @param data the data item stored in the new vertex
+     * @param name the data item stored in the new vertex
      * @return true if the data can be inserted as a new vertex, false if it is already in the graph
      * @throws NullPointerException if data is null
      */
@@ -21,7 +20,7 @@ public interface GraphADT<T> {
      * Remove a vertex from the graph.
      * Also removes all edges adjacent to the vertex from the graph (all edges that have the vertex as a source or a destination vertex).
      *
-     * @param data the data item stored in the vertex to remove
+     * @param name the data item stored in the vertex to remove
      * @return true if a vertex with *data* has been removed, false if it was not in the graph
      * @throws NullPointerException if data is null
      */
@@ -53,7 +52,7 @@ public interface GraphADT<T> {
     /**
      * Check if the graph contains a vertex with data item *data*.
      *
-     * @param v the data item to check check for
+     * @param name the data item to check check for
      * @return true if data item is stored in a vertex of the graph, false otherwise
      * @throws NullPointerException if *data* is null
      */
