@@ -415,5 +415,10 @@ public class MetroMap<T> implements GraphADT<T> {
     public int getPathCost(String start, String end, String color) {
         return dijkstrasShortestPath(start, end, color).distance;
     }
+    @Override
+    public int getPathCost(String start, String end) {
+      // TODO Auto-generated method stub
+      return 0;
+    }
 
 }
