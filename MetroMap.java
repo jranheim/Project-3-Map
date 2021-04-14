@@ -326,10 +326,12 @@ public class MetroMap<T> implements GraphADT<T> {
      *     including when no vertex containing start or end can be found
      */
     protected Path dijkstrasShortestPath(String start, String end, String color) {
+        System.out.println("HELLO");
         int col = 0;
         if(color.equals("Red"))  {col = 0;}
-        if(color.equals("Blue"))  {col = 1;}
-        if(color.equals("Green"))  {col = 2;}
+        else if(color.equals("Blue"))  {col = 1;}
+        else if(color.equals("Green"))  {col = 2;}
+        System.out.println(col);
         PriorityQueue<Path> frontier = new PriorityQueue<Path>();
         LinkedList<Vertex> visited = new LinkedList<Vertex>();
         LinkedList<Path> fin = new LinkedList<Path>();
@@ -413,6 +415,7 @@ public class MetroMap<T> implements GraphADT<T> {
      *     including when no vertex containing start or end can be found
      */
     public int getPathCost(String start, String end, String color) {
+        System.out.println("HELLO2");
         return dijkstrasShortestPath(start, end, color).distance;
     }
     @Override
