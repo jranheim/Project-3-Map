@@ -20,6 +20,8 @@ import java.util.Scanner;
  */
 
 public class MetroMapper<T> implements MapperInterface {
+
+    private List<List<String>> userPaths = new ArrayList<List<String>>();
     
     private List<String> stationNames = new ArrayList<String>(); // list of the station's names
     
@@ -72,6 +74,32 @@ public class MetroMapper<T> implements MapperInterface {
             parisMap.insertEdge(array2[0], array2[1], Integer.parseInt(array2[2]));
         }
         
+    }
+
+    @Override
+    public List<String> getStations() {
+        return stationNames;
+    }
+
+    @Override
+    public void addPath(String start, String end) {
+        userPaths.add(shortestPath(start, end));
+        
+    }
+
+    @Override
+    public List<List<String>> getUserPaths() {
+        return userPaths;
+    }
+
+    @Override
+    public int getPathCost(String start, String end) {
+        return parisMap.dijkstrasShortestPath(start, end).distance;
+    }
+
+    @Override
+    public List<String> shortestPath(String start, String end) {
+        return parisMap.dijkstrasShortestPath(start,end).dataSequence;
     }
 
     
