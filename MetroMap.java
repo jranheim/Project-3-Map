@@ -21,6 +21,7 @@ public class MetroMap<T> implements GraphADT<T> {
      */
     protected class Vertex {
         public String name; // name of station
+        LinkedList<Boolean> colors = new LinkedList<>();
         public boolean red; // true if red line runs through station
         public boolean blue; // true if blue line runs through station
         public boolean green; // true if green line runs through station
@@ -28,9 +29,9 @@ public class MetroMap<T> implements GraphADT<T> {
 
         public Vertex(String name, boolean r, boolean b, boolean g) {
             this.name = name;
-            this.red = r;
-            this.blue = b;
-            this.green = g;
+            colors.add(r);
+            colors.add(b);
+            colors.add(g);
             this.edgesLeaving = new LinkedList<>();
         }
     }
@@ -269,7 +270,11 @@ public class MetroMap<T> implements GraphADT<T> {
             this.start = start;
             this.distance = 0;
             this.dataSequence = new LinkedList<>();
-            this.dataSequence.add(start.name);
+            String toAdd = start.name;
+            if(start.colors.get(0)) toAdd+="* R";
+            if(start.colors.get(1)) toAdd+=" B";
+            if(start.colors.get(2)) toAdd+=" G*";
+            this.dataSequence.add(toAdd);
             this.end = start;
         }
 
@@ -320,12 +325,17 @@ public class MetroMap<T> implements GraphADT<T> {
      * @throws NoSuchElementException when no path from start to end can be found,
      *     including when no vertex containing start or end can be found
      */
-    protected Path dijkstrasShortestPath(String start, String end) {
+    protected Path dijkstrasShortestPath(String start, String end, String color) {
+        int col = 0;
+        if(color.equals("Red"))  {col = 0;}
+        if(color.equals("Blue"))  {col = 1;}
+        if(color.equals("Green"))  {col = 2;}
         PriorityQueue<Path> frontier = new PriorityQueue<Path>();
         LinkedList<Vertex> visited = new LinkedList<Vertex>();
         LinkedList<Path> fin = new LinkedList<Path>();
-
         Path curr = new Path(vertices.get(start));
+        if(curr.start.colors.get(col) == false)  { throw new NoSuchElementException("The line selected does not start at this station!"); }
+        
         visited.add(curr.end);
         while(visited.size() < this.getVertexCount()) {
 
@@ -334,10 +344,10 @@ public class MetroMap<T> implements GraphADT<T> {
                     continue;
                 }
                 if(curr.end.edgesLeaving.get(i).target.name.equals(end))  {
-                    fin.add(new Path(curr, curr.end.edgesLeaving.get(i)));
+                    if(curr.end.edgesLeaving.get(i).target.colors.get(col))  { fin.add(new Path(curr, curr.end.edgesLeaving.get(i))); }
                     continue;
                 }
-                frontier.add(new Path(curr, curr.end.edgesLeaving.get(i)));
+                if(curr.end.edgesLeaving.get(i).target.colors.get(col)) { frontier.add(new Path(curr, curr.end.edgesLeaving.get(i))); }
             }
             visited.add(curr.end);
             curr = frontier.poll();
@@ -363,7 +373,7 @@ public class MetroMap<T> implements GraphADT<T> {
         return curr;
     }
 
-    private String toStringHelp(Path p)  {
+    public String toString(Path p)  {
         String s = "[ ";
         for(int i = 0; i < p.dataSequence.size(); i++) {
             s += p.dataSequence.get(i) + " ";
@@ -383,8 +393,8 @@ public class MetroMap<T> implements GraphADT<T> {
          * @throws NoSuchElementException when no path from start to end can be found
          *     including when no vertex containing start or end can be found
          */
-    public List<String> shortestPath(String start, String end) {
-        return dijkstrasShortestPath(start,end).dataSequence;
+    public List<String> shortestPath(String start, String end, String color) {
+        return dijkstrasShortestPath(start,end,color).dataSequence;
     }
 
     /**
@@ -398,8 +408,8 @@ public class MetroMap<T> implements GraphADT<T> {
      * @throws NoSuchElementException when no path from start to end can be found
      *     including when no vertex containing start or end can be found
      */
-    public int getPathCost(String start, String end) {
-        return dijkstrasShortestPath(start, end).distance;
+    public int getPathCost(String start, String end,String color) {
+        return dijkstrasShortestPath(start, end, color).distance;
     }
 
 }
