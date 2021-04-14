@@ -1,3 +1,5 @@
-startingStationName, targetStationName, travelTime
-startingStationName, targetStationName, travelTime
-startingStationName, targetStationName, travelTime
+Wellington,Madison,60
+Madison,Milwaukee,45
+Milwaukee,Wellington,15
+Racine,Wellington,30
+Wellington,Milwaukee,10

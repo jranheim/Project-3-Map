@@ -19,7 +19,7 @@ import java.util.Scanner;
  * into a graph of Stations and edges between the stations.
  */
 
-public class MetroMapper<T> {
+public class MetroMapper<T> implements MapperInterface {
     
     private List<String> stationNames = new ArrayList<String>(); // list of the station's names
     
@@ -73,6 +73,8 @@ public class MetroMapper<T> {
         }
         
     }
+
+    
 
 
 }

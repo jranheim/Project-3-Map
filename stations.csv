@@ -1,3 +1,4 @@
-stationName, redLineBool, blueLineBool, greenLineBool
-stationName2, redLineBool, blueLineBool, greenLineBool
-stationName3, redLineBool, blueLineBool, greenLineBool
+Wellington,true,true,false
+Madison,false,true,false
+Milwaukee,true,true,true
+Racine,false,true,false
