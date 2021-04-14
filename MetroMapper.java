@@ -25,7 +25,7 @@ public class MetroMapper<T> implements MapperInterface {
     
     private List<String> stationNames = new ArrayList<String>(); // list of the station's names
     
-    private MetroMap<T> parisMap = new MetroMap<T>(); // graph to store paris metro stations and info
+    public MetroMap<T> parisMap = new MetroMap<T>(); // graph to store paris metro stations and info
 
     public MetroMapper(String stationFilePath, String edgeFilePath) throws FileNotFoundException, IOException {
 
@@ -82,8 +82,8 @@ public class MetroMapper<T> implements MapperInterface {
     }
 
     @Override
-    public void addPath(String start, String end) {
-        userPaths.add(shortestPath(start, end));
+    public void addPath(String start, String end, String s) {
+        userPaths.add(shortestPath(start, end, s));
         
     }
 
@@ -93,13 +93,13 @@ public class MetroMapper<T> implements MapperInterface {
     }
 
     @Override
-    public int getPathCost(String start, String end) {
-        return parisMap.dijkstrasShortestPath(start, end).distance;
+    public int getPathCost(String start, String end, String s) {
+        return parisMap.dijkstrasShortestPath(start, end,s).distance;
     }
 
     @Override
-    public List<String> shortestPath(String start, String end) {
-        return parisMap.dijkstrasShortestPath(start,end).dataSequence;
+    public List<String> shortestPath(String start, String end, String s) {
+        return parisMap.dijkstrasShortestPath(start,end, s).dataSequence;
     }
 
     
