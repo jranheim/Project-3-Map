@@ -161,7 +161,7 @@ public class Frontend {
         int i = 0;
         i = newMap.parisMap.getPathCost(first, second, color);
         System.out.print("Path Cost: ");
-        System.out.println(i + " Dollars");
+        System.out.println(i + " Minutes");
         System.out.println();
         System.out.print("Do you want to save this path?");
         System.out.print("\nY/N: ");
@@ -185,7 +185,7 @@ public class Frontend {
         int i = 0;
         i = newMap.parisMap.getPathCost(first, second, color);
         System.out.print("Path Cost: ");
-        System.out.println(i + " Dollars");
+        System.out.println(i + " Minutes");
         System.out.println();
         System.out.print("Do you want to save this path?");
         System.out.print("\nY/N: ");
@@ -209,7 +209,7 @@ public class Frontend {
         int i = 0;
         i = newMap.parisMap.getPathCost(first, second, color);
         System.out.print("Path Cost: ");
-        System.out.println(i + " Dollars");
+        System.out.println(i + " Minutes");
         System.out.println();
         System.out.print("Do you want to save this path?");
         System.out.print("\nY/N: ");
@@ -226,7 +226,7 @@ public class Frontend {
       System.out.println("Try another route.");
       return;
     } catch (NullPointerException e) {
-      System.out.println("No Path available, Try another Path ie. E-C-Red");
+      System.out.println("No Path available");
     }
 
   }
