@@ -30,8 +30,8 @@ public class MetroMap<T> implements GraphADT<T> {
         public Vertex(String name, boolean r, boolean b, boolean g) {
             this.name = name;
             colors.add(r);
-            colors.add(b);
-            colors.add(g);
+            colors.add(1, b);
+            colors.add(2, g);
             this.edgesLeaving = new LinkedList<>();
         }
     }
@@ -326,17 +326,15 @@ public class MetroMap<T> implements GraphADT<T> {
      *     including when no vertex containing start or end can be found
      */
     protected Path dijkstrasShortestPath(String start, String end, String color) {
-        System.out.println("HELLO");
         int col = 0;
         if(color.equals("Red"))  {col = 0;}
         else if(color.equals("Blue"))  {col = 1;}
         else if(color.equals("Green"))  {col = 2;}
-        System.out.println(col);
         PriorityQueue<Path> frontier = new PriorityQueue<Path>();
         LinkedList<Vertex> visited = new LinkedList<Vertex>();
         LinkedList<Path> fin = new LinkedList<Path>();
         Path curr = new Path(vertices.get(start));
-        if(curr.start.colors.get(col) == false)  { throw new NoSuchElementException("The line selected does not start at this station!"); }
+        if(curr.start.colors.get(col) == false)  { return null; }
         
         visited.add(curr.end);
         while(visited.size() < this.getVertexCount()) {
@@ -370,7 +368,7 @@ public class MetroMap<T> implements GraphADT<T> {
         }
 
         if (!curr.start.name.equals(start) || !curr.end.name.equals(end)) {
-            throw new NoSuchElementException();
+            return null;
         }
         return curr;
     }
@@ -396,11 +394,8 @@ public class MetroMap<T> implements GraphADT<T> {
          *     including when no vertex containing start or end can be found
          */
     public List<String> shortestPath(String start, String end, String color) {
-        try{
         return dijkstrasShortestPath(start,end,color).dataSequence;
-        } catch(Exception e)  {
-            return null;
-        }
+        
     }
 
     /**
@@ -415,7 +410,6 @@ public class MetroMap<T> implements GraphADT<T> {
      *     including when no vertex containing start or end can be found
      */
     public int getPathCost(String start, String end, String color) {
-        System.out.println("HELLO2");
         return dijkstrasShortestPath(start, end, color).distance;
     }
     @Override
