@@ -30,57 +30,33 @@ public class Frontend {
       System.out.println();
       System.out.println("Input the letter of your starting station.");
 
-
+      // int i = 1;
       for (String station : newMap.getStations()) {
         System.out.println(station);
-
+        // i++;
       }
 
       System.out.print("\nInput: ");
       Scanner scnr = new Scanner(System.in);
-      String input = scnr.nextLine();
+      String Choice = scnr.nextLine();
       System.out.println();
-      if (input.equals("A")) {
-        String start = newMap.getStations().get(0).toString();
-        chooseDestination(newMap, scnr, start);
+      String first;
+
+
+      if (Choice.equals("A") || Choice.equals("B") || Choice.equals("C") || Choice.equals("D")
+          || Choice.equals("E") || Choice.equals("F") || Choice.equals("G") || Choice.equals("H")) {
+        first = Choice;
+        chooseDestination(newMap, scnr, first);
       }
-      if (input.equals("B")) {
-        String start = newMap.getStations().get(1).toString();
-        chooseDestination(newMap, scnr, start);
-      }
-      if (input.equals("C")) {
-        String start = newMap.getStations().get(2).toString();
-        chooseDestination(newMap, scnr, start);
-      }
-      if (input.equals("D")) {
-        String start = newMap.getStations().get(3).toString();
-        chooseDestination(newMap, scnr, start);
-      }
-      if (input.equals("E")) {
-        String start = newMap.getStations().get(4).toString();
-        chooseDestination(newMap, scnr, start);
-      }
-      if (input.equals("F")) {
-        String start = newMap.getStations().get(5).toString();
-        chooseDestination(newMap, scnr, start);
-      }
-      if (input.equals("G")) {
-        String start = newMap.getStations().get(6).toString();
-        chooseDestination(newMap, scnr, start);
-      }
-      if (input.equals("H")) {
-        String start = newMap.getStations().get(7).toString();
-        chooseDestination(newMap, scnr, start);
-      }
-      if (input.equals("")) {
+      if (Choice.equals("")) {
         continue;
       }
-      if (input.equals("s")) {
+      if (Choice.equals("s")) {
         System.out.println("Saved Paths: " + newMap.getUserPaths());
-      } else if (input.equals("q")) {
+      } else if (Choice.equals("q")) {
         quit = true;
       }
-
+      System.out.println("Try Again.");
     }
     System.out.println("Session ended");
 
@@ -93,40 +69,15 @@ public class Frontend {
     }
     System.out.print("\nInput: ");
     String input = scnr.nextLine();
-    if (input.equals("A")) {
-      String second = newMap.getStations().get(0).toString();
-      chooseColor(newMap, scnr, first, second);
-    }
-    if (input.equals("B")) {
-      String second = newMap.getStations().get(1).toString();
-      chooseColor(newMap, scnr, first, second);
-    }
-    if (input.equals("C")) {
-      String second = newMap.getStations().get(2).toString();
-      chooseColor(newMap, scnr, first, second);
-    }
-    if (input.equals("D")) {
-      String second = newMap.getStations().get(3).toString();
-      chooseColor(newMap, scnr, first, second);
-    }
-    if (input.equals("E")) {
-      String second = newMap.getStations().get(4).toString();
-      chooseColor(newMap, scnr, first, second);
-    }
-    if (input.equals("F")) {
-      String second = newMap.getStations().get(5).toString();
-      chooseColor(newMap, scnr, first, second);
-    }
-    if (input.equals("G")) {
-      String second = newMap.getStations().get(6).toString();
-      chooseColor(newMap, scnr, first, second);
-    }
-    if (input.equals("H")) {
-      String second = newMap.getStations().get(7).toString();
+    String second;
+    if (input.equals("A") || input.equals("B") || input.equals("C") || input.equals("D")
+        || input.equals("E") || input.equals("F") || input.equals("G") || input.equals("H")) {
+      second = input;
       chooseColor(newMap, scnr, first, second);
     }
     if (input.equals("s")) {
       System.out.println("Saved Paths: " + newMap.getUserPaths());
+      System.out.println();
       System.out.println();
     }
     if (input.equals("")) {
@@ -149,62 +100,13 @@ public class Frontend {
     String input = scnr.nextLine();
     System.out.println();
 
+    String color;
+    ArrayList<String> list = new ArrayList<String>();
     try {
-      if (input.equals("Red")) {
-        String color = "Red";
-
-        // newMap.addPath(first, second, color);
-        ArrayList<String> list = new ArrayList<String>();
-        System.out.print("Shortest Path: ");
+      if (input.equals("Red") || input.equals("Blue") || input.equals("Green")) {
+        color = input;
         list.add(newMap.parisMap.shortestPath(first, second, color).toString());
-        System.out.println(list.toString());
-        int i = 0;
-        i = newMap.parisMap.getPathCost(first, second, color);
-        System.out.print("Path Cost: ");
-        System.out.println(i + " Minutes");
-        System.out.println();
-        System.out.print("Do you want to save this path?");
-        System.out.print("\nY/N: ");
-        String inp = scnr.nextLine();
-        if (inp.equals("Y")) {
-          newMap.addPath(first, second, color);
-          System.out.println("Path saved.");
-          System.out.println();
-          return;
-        }
-
-      }
-      if (input.equals("Green")) {
-        String color = "Green";
-
-        // newMap.addPath(first, second, color);
-        ArrayList<String> list = new ArrayList<String>();
         System.out.print("Shortest Path: ");
-        list.add(newMap.parisMap.shortestPath(first, second, color).toString());
-        System.out.println(list.toString());
-        int i = 0;
-        i = newMap.parisMap.getPathCost(first, second, color);
-        System.out.print("Path Cost: ");
-        System.out.println(i + " Minutes");
-        System.out.println();
-        System.out.print("Do you want to save this path?");
-        System.out.print("\nY/N: ");
-        String inp = scnr.nextLine();
-        if (inp.equals("Y")) {
-          newMap.addPath(first, second, color);
-          System.out.println("Path saved.");
-          System.out.println();
-          return;
-        }
-
-      }
-      if (input.equals("Blue")) {
-        String color = "Blue";
-
-        // newMap.addPath(first, second, color);
-        ArrayList<String> list = new ArrayList<String>();
-        System.out.print("Shortest Path: ");
-        list.add(newMap.parisMap.shortestPath(first, second, color).toString());
         System.out.println(list.toString());
         int i = 0;
         i = newMap.parisMap.getPathCost(first, second, color);
