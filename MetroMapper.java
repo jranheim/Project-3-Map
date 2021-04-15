@@ -43,7 +43,6 @@ public class MetroMapper<T> implements MapperInterface {
             System.out.println("Station file not found.");
             e.printStackTrace();
         }
-
         String[] test = data.split("\n");
         for (String s : test) {
             String[] array = s.split(",");

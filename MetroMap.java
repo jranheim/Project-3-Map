@@ -29,7 +29,7 @@ public class MetroMap<T> implements GraphADT<T> {
 
         public Vertex(String name, boolean r, boolean b, boolean g) {
             this.name = name;
-            colors.add(r);
+            colors.add(0, r);
             colors.add(1, b);
             colors.add(2, g);
             this.edgesLeaving = new LinkedList<>();
@@ -326,7 +326,7 @@ public class MetroMap<T> implements GraphADT<T> {
      *     including when no vertex containing start or end can be found
      */
     protected Path dijkstrasShortestPath(String start, String end, String color) {
-        int col = 0;
+        int col = -1;
         if(color.equals("Red"))  {col = 0;}
         else if(color.equals("Blue"))  {col = 1;}
         else if(color.equals("Green"))  {col = 2;}
@@ -335,7 +335,6 @@ public class MetroMap<T> implements GraphADT<T> {
         LinkedList<Path> fin = new LinkedList<Path>();
         Path curr = new Path(vertices.get(start));
         if(curr.start.colors.get(col) == false)  { return null; }
-        
         visited.add(curr.end);
         while(visited.size() < this.getVertexCount()) {
 
